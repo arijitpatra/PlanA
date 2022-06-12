@@ -103,9 +103,9 @@ export const getFormattedLegend = (value: string, idx: number): string => {
   return "";
 };
 
-export const getInterval = (length: number, intervalFactor: number): number => {
-  return Math.ceil(length);
-};
+// export const getInterval = (length: number, intervalFactor: number): number => {
+//   return Math.ceil(length);
+// };
 
 const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const [value, setValue] = useState(0);
@@ -114,7 +114,7 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const isTabletOrMobile: boolean = useMediaQuery({
     query: "(max-width: 768px)",
   });
-  const intervalFactor: number = isTabletOrMobile ? 2.5 : aggregatedData.length;
+  const intervalFactor: number = isTabletOrMobile ? 2.5 : 0;
 
   const a11yProps = (index: any) => {
     return {
@@ -155,7 +155,7 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
         <XAxis
           dataKey="start"
           tickLine={false}
-          // interval={getInterval(aggregatedData.length, intervalFactor)}
+          interval={intervalFactor}
           tickFormatter={(value) =>
             getTickXFormatted(aggregatedData.length, value, idx)
           }
