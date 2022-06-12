@@ -15,7 +15,6 @@ import moment from "moment";
 import type { Moment } from "moment";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import dateFormat from "./utils/getDateFormat";
-import { useTimeRange } from "./hooks/useTimeRange";
 
 const StyledApp = styled.div`
   width: 100%;
@@ -55,7 +54,6 @@ const App = () => {
   const [isLoading, setIsLoading]: [boolean, Function] = useState(true);
   const [searchPanelData, setSearchPanelData]: [SearchPanelData, Function] =
     useState(initialSearchPanelData);
-  useTimeRange(searchPanelData);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -72,6 +70,11 @@ const App = () => {
         begin: searchPanelData.begin.format(dateFormat),
         end: searchPanelData.end.format(dateFormat),
       };
+      sessionStorage.setItem(
+        "startDate",
+        searchPanelData.begin.format(dateFormat)
+      );
+      sessionStorage.setItem("endDate", searchPanelData.end.format(dateFormat));
       setIsLoading(true);
       // Get avg daily data only when product is selected
       if (searchPanelData.product) {
