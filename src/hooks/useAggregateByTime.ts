@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import type { AvgByProduct } from "../api/emissions/getAvgByProduct";
+
+// Try optimization techniques: useMemo and all
 
 export const useAggregateByTime = (data: any, idx: number) => {
   const [aggregatedData, setAggregatedData] = useState(data);

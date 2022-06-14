@@ -18,6 +18,7 @@ import { useMediaQuery } from "react-responsive";
 import dateFormat from "../../utils/getDateFormat";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import TabPanel from "../tabPanel/TabPanel";
 
 const StyledTooltip = styled.div`
   background-color: white;
@@ -35,28 +36,6 @@ type CustomTooltipProps = {
   payload?: any;
   label?: string;
 };
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </div>
-  );
-}
 
 export const getTickXFormatted = (
   length: number,
@@ -114,6 +93,7 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const isTabletOrMobile: boolean = useMediaQuery({
     query: "(max-width: 768px)",
   });
+  // if aggregatedData.length is more than some threshold then maybe limit it
   const intervalFactor: number = isTabletOrMobile ? 2.5 : 0;
 
   const a11yProps = (index: any) => {
