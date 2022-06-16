@@ -10,6 +10,7 @@ const TabPanel = (props: TabPanelProps) => {
   return (
     <div
       role="tabpanel"
+      data-testid="test-tabpanel"
       hidden={value !== index}
       id={`emission-tabpanel-${index}`}
       aria-labelledby={`emission-tab-${index}`}

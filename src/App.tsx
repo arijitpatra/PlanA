@@ -14,7 +14,7 @@ import type {
 import moment from "moment";
 import type { Moment } from "moment";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import dateFormat from "./utils/getDateFormat";
+import { dateFormat } from "./utils/getDateFormat";
 
 const StyledApp = styled.div`
   width: 100%;

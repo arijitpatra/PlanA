@@ -1,3 +1,7 @@
-const dateFormat = 'YYYY-MM-DD'
+export const dateFormat = "YYYY-MM-DD";
 
-export default dateFormat
+export const yearDateFormat = "YYYY";
+
+export const quarterDateFormat = "Q YYYY";
+
+export const monthDateFormat = "MMM YYYY";

@@ -15,7 +15,12 @@ import styled from "styled-components";
 import { useTheme } from "@material-ui/core/styles";
 import type { Theme } from "@material-ui/core";
 import { useMediaQuery } from "react-responsive";
-import dateFormat from "../../utils/getDateFormat";
+import {
+  dateFormat,
+  yearDateFormat,
+  quarterDateFormat,
+  monthDateFormat,
+} from "../../utils/getDateFormat";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "../tabPanel/TabPanel";
@@ -48,18 +53,14 @@ export const getTickXFormatted = (
 ): string => {
   const date = moment(value);
 
+  const indexToDateFormatMapping: any = {
+    0: date.format(yearDateFormat),
+    1: "Q" + date.format(quarterDateFormat),
+    2: date.format(monthDateFormat),
+  };
+
   if (length > 0) {
-    // TODO: make it one object
-    switch (idx) {
-      case 0:
-        return date.format("YYYY");
-      case 1:
-        return "Q" + date.format("Q YYYY");
-      case 2:
-        return date.format("MMM YYYY");
-      default:
-        return date.format(dateFormat);
-    }
+    return indexToDateFormatMapping[idx] || date.format(dateFormat);
   }
   return "";
 };
@@ -69,21 +70,14 @@ export const getTickYFormatted = (value: number): string => {
 };
 
 export const getFormattedLegend = (value: string, idx: number): string => {
-  let duration = "Daily";
+  const indexToDurationMapping: any = {
+    0: "Yearly",
+    1: "Quarterly",
+    2: "Monthly",
+  };
 
-  // TODO: make it one object
-  switch (idx) {
-    case 0:
-      duration = "Yearly";
-      break;
-    case 1:
-      duration = "Quarterly";
-      break;
-    case 2:
-      duration = "Monthly";
-      break;
-  }
-  if (value === "average") return `${duration} average CO2 emission`;
+  if (value === "average")
+    return `${indexToDurationMapping[idx] || "Daily"} average CO2 emission`;
   return "";
 };
 
@@ -101,7 +95,7 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const isTabletOrMobile: boolean = useMediaQuery({
     query: "(max-width: 768px)",
   });
-  // if aggregatedData.length is more than some threshold then maybe limit it
+  // TODO: if aggregatedData.length is more than some threshold then maybe limit it
   const intervalFactor: number = isTabletOrMobile ? 2.5 : 0;
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -165,6 +159,8 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
     </ResponsiveContainer>
   );
 
+  if (aggregatedData.length === 0) return <div>No data found</div>;
+
   return (
     <div style={{ width: "75%" }}>
       <Tabs
@@ -177,15 +173,11 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
         <Tab label="Quarterly" {...a11yProps(1)} />
         <Tab label="Monthly" {...a11yProps(2)} />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        {getTab(0)}
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        {getTab(1)}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        {getTab(2)}
-      </TabPanel>
+      {[0, 1, 2].map((item, idx) => (
+        <TabPanel value={value} index={item} key={item + idx}>
+          {getTab(item)}
+        </TabPanel>
+      ))}
     </div>
   );
 };
