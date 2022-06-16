@@ -37,12 +37,17 @@ type CustomTooltipProps = {
   label?: string;
 };
 
+export const getInterval = (lenght: number, intervalFactor: number): number => {
+  return Math.ceil(lenght / intervalFactor);
+};
+
 export const getTickXFormatted = (
   length: number,
   value: string,
   idx: number
 ): string => {
   const date = moment(value);
+
   if (length > 0) {
     // TODO: make it one object
     switch (idx) {
@@ -82,26 +87,22 @@ export const getFormattedLegend = (value: string, idx: number): string => {
   return "";
 };
 
-// export const getInterval = (length: number, intervalFactor: number): number => {
-//   return Math.ceil(length);
-// };
+const a11yProps = (index: any) => {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+};
 
 const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const [value, setValue] = useState(0);
-  const [isLoading, aggregatedData] = useAggregateByTime(data, value);
+  const aggregatedData = useAggregateByTime(data, value);
   const theme: Theme = useTheme();
   const isTabletOrMobile: boolean = useMediaQuery({
     query: "(max-width: 768px)",
   });
   // if aggregatedData.length is more than some threshold then maybe limit it
   const intervalFactor: number = isTabletOrMobile ? 2.5 : 0;
-
-  const a11yProps = (index: any) => {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  };
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -139,6 +140,8 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
           tickFormatter={(value) =>
             getTickXFormatted(aggregatedData.length, value, idx)
           }
+          dy={20}
+          angle={45}
         />
         <YAxis
           type="number"
