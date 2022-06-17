@@ -90,7 +90,7 @@ const a11yProps = (index: any) => {
 
 const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const [value, setValue] = useState(0);
-  const aggregatedData = useAggregateByTime(data, value);
+  const { aggregatedData } = useAggregateByTime(data, value);
   const theme: Theme = useTheme();
   const isTabletOrMobile: boolean = useMediaQuery({
     query: "(max-width: 768px)",
@@ -98,7 +98,7 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
   // TODO: if aggregatedData.length is more than some threshold then maybe limit it
   const intervalFactor: number = isTabletOrMobile ? 2.5 : 0;
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 
@@ -159,19 +159,19 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
     </ResponsiveContainer>
   );
 
-  if (aggregatedData.length === 0) return <div>No data found</div>;
+  if (data.length === 0) return <div>No data found</div>;
 
   return (
     <div style={{ width: "75%" }}>
       <Tabs
         value={value}
-        onChange={handleChange}
+        onChange={handleTabChange}
         aria-label="aggregate data by time"
         centered
       >
-        <Tab label="Yearly" {...a11yProps(0)} />
-        <Tab label="Quarterly" {...a11yProps(1)} />
-        <Tab label="Monthly" {...a11yProps(2)} />
+        <Tab label="Yearly" {...a11yProps(0)} data-testid="test-tabs" />
+        <Tab label="Quarterly" {...a11yProps(1)} data-testid="test-tabs" />
+        <Tab label="Monthly" {...a11yProps(2)} data-testid="test-tabs" />
       </Tabs>
       {[0, 1, 2].map((item, idx) => (
         <TabPanel value={value} index={item} key={item + idx}>

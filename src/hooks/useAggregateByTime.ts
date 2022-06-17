@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import type { AvgByProduct } from "../api/emissions/getAvgByProduct";
 import { calcMonthlyData, calcQuarterlyData, calcYearlyData } from "../utils/aggregateDataByTimeFns";
 
-// Try optimization techniques: useMemo and all
-
 export const useAggregateByTime = (data: any, idx: number) => {
   const [aggregatedData, setAggregatedData] = useState(data);
 
@@ -32,5 +30,5 @@ export const useAggregateByTime = (data: any, idx: number) => {
     /*****MONTHLY******/
   }, [data, idx]);
 
-  return aggregatedData;
+  return {aggregatedData,setAggregatedData};
 };

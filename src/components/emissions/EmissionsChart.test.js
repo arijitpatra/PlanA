@@ -5,6 +5,7 @@ import EmissionsChart, {
   getFormattedLegend,
   getInterval,
 } from "./EmissionsChart";
+import { data as testData } from "../../utils/testData";
 
 const data = [];
 
@@ -44,4 +45,10 @@ test("should get interval", () => {
   expect(getInterval(0, 1)).toBe(0);
   expect(getInterval(5, 1)).toBe(5);
   expect(getInterval(5, 5)).toBe(1);
+});
+
+test("should have 3 tabs", () => {
+  const props = { data: testData };
+  render(<EmissionsChart {...props} />);
+  expect(screen.getAllByTestId("test-tabs").length).toBe(3);
 });
