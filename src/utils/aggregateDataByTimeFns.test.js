@@ -11,14 +11,14 @@ import {
   calcMonthlyData,
 } from "./aggregateDataByTimeFns";
 
-test("calculates yearly data correctly", () => {
+test("calculate yearly data correctly", () => {
   expect(calcYearlyData(yearRange, data)).toStrictEqual(yearlyData);
 });
 
-test("calculates quarterly data correctly", () => {
+test("calculate quarterly data correctly", () => {
   expect(calcQuarterlyData(yearRange, data)).toStrictEqual(quarterlyData);
 });
 
-test("calculates monthly data correctly", () => {
+test("calculate monthly data correctly", () => {
   expect(calcMonthlyData(yearRange, data)).toStrictEqual(monthlyData);
 });

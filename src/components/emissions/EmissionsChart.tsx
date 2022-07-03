@@ -81,7 +81,7 @@ export const getFormattedLegend = (value: string, idx: number): string => {
   return "";
 };
 
-const a11yProps = (index: any) => {
+const a11yProps = (index: number) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
@@ -95,7 +95,8 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
   const isTabletOrMobile: boolean = useMediaQuery({
     query: "(max-width: 768px)",
   });
-  // TODO: if aggregatedData.length is more than some threshold then maybe limit it
+
+  // TODO: if aggregatedData.length is more than some threshold then maybe limit intervalFactor
   const intervalFactor: number = isTabletOrMobile ? 2.5 : 0;
 
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -159,6 +160,7 @@ const EmissionsChart = ({ data }: EmissionsChartProps) => {
     </ResponsiveContainer>
   );
 
+  // Blank state handling
   if (data.length === 0) return <div>No data found</div>;
 
   return (
